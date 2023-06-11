@@ -1,0 +1,157 @@
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
+import { getduration, gettime } from "@/utils/gettime";
+import { AutoSuggest } from "./reactsuggest";
+
+export function Home() {
+  const [from, setFrom] = useState();
+  const [to, setTo] = useState();
+  const [trains, setTrains] = useState([]);
+  const getTrains = async () => {
+    const data = await axios.get(
+      `http://127.0.0.1:8000/todos/between/${from}/${to}`
+    );
+    console.log(data, "data");
+    setTrains([...data.data]);
+  };
+  return (
+    <>
+      <div className="searchcontainer p-4">
+        <h3 className="text-center text-white text-capitalize">
+          Check train between stations
+        </h3>
+        <div className="searchform p-2">
+          <input
+            placeholder="From Station"
+            className="mr-2 inputfield"
+            value={from}
+            onChange={(e) => setFrom(e.target.value)}
+          />
+          <AutoSuggest />
+          <input
+            placeholder="To Station"
+            className="ml-2 pl-2 inputfield"
+            value={to}
+            onChange={(e) => setTo(e.target.value)}
+          />
+          {new Date().toDateString()}
+          <button className="searchtrainsbtn" onClick={() => getTrains()}>
+            search trains
+          </button>
+        </div>
+      </div>
+      <div className="trains container-fluid p-6">
+        <div className="row">
+          <div className="col-3">
+            <div className="filters">
+              <h5>Quick filters</h5>
+              <div className="select">
+                <div className="selectbox">
+                  <input
+                    type="checkbox"
+                    id="subscribeNews"
+                    name="subscribe"
+                    value="newsletter"
+                  />
+                  <label>AC Only</label>
+                </div>
+                <div className="selectbox">
+                  <input
+                    type="checkbox"
+                    id="subscribeNews"
+                    name="subscribe"
+                    value="newsletter"
+                  />
+                  <label>Confirm Seats</label>
+                </div>
+                <div className="selectbox">
+                  <input
+                    type="checkbox"
+                    id="subscribeNews"
+                    name="subscribe"
+                    value="newsletter"
+                  />
+                  <label>5PM-11PM</label>
+                </div>
+              </div>
+              <h5>Filter By Time</h5>
+              <div className="d-flex">
+                <div className="d-flex flex-wrap time justify-content-between">
+                  <div className="border px-2 my-1 w-40 rounded">
+                    <img src="./sunrise.svg" alt="" />
+                    05AM-11AM
+                  </div>
+                  <div className="border px-2 my-1 w-40 rounded">
+                    <img src="./brightness-alt-high.svg" alt="" />
+                    11AM-05PM
+                  </div>
+                  <div className="border px-2 my-1 w-40 rounded">
+                    <img src="./sunset.svg" alt="" />
+                    05PM-11PM
+                  </div>
+                  <div className="border px-2 my-1 w-40 rounded ">
+                    <img src="./moon-stars.svg" alt="" />
+                    11PM-05AM
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-9">
+            <h5
+              style={{
+                color: "#000",
+                textTransform: "capitalize",
+                marginBottom: "20px",
+                fontWeight: "600",
+              }}
+            >
+              {from} to {to} Trains ({trains.length} Trains)
+            </h5>
+
+            <div className="container-fluid headers">
+              <div className="row">
+                <div className="col-6">Sort by :</div>
+                <div className="col-2">Departure</div>
+                <div className="col-2">Duration</div>
+                <div className="col-2">Arrival</div>
+              </div>
+            </div>
+
+            {trains.length > 0 &&
+              trains.map((t) => (
+                <div className="train d-flex justify-content-between">
+                  <div className="container-fluid">
+                    <div className="row">
+                      <div className="col-6">
+                        <h5>
+                          <span className="place">
+                            {t.trainNumber} {t.from} - {t.to}
+                          </span>{" "}
+                          {t.trainName}
+                        </h5>
+                      </div>
+                      <div className="col-2">
+                        <h5>{gettime(from, t.stations)}</h5>
+                        <p className="d">{from}</p>
+                      </div>
+                      <div className="col-2">
+                        <p>{getduration(from, to, t.stations)}</p>
+                      </div>
+                      <div className="col-2">
+                        <h5>{gettime(to, t.stations)}</h5>
+                        <p className="a">{to}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default Home;

@@ -22,19 +22,8 @@ export function Home() {
           Check train between stations
         </h3>
         <div className="searchform p-2">
-          <input
-            placeholder="From Station"
-            className="mr-2 inputfield"
-            value={from}
-            onChange={(e) => setFrom(e.target.value)}
-          />
-          <AutoSuggest />
-          <input
-            placeholder="To Station"
-            className="ml-2 pl-2 inputfield"
-            value={to}
-            onChange={(e) => setTo(e.target.value)}
-          />
+          <AutoSuggest placeholder="From Station" froom setFrom={setFrom} />
+          <AutoSuggest placeholder="To Station" too setTo={setTo} />
           {new Date().toDateString()}
           <button className="searchtrainsbtn" onClick={() => getTrains()}>
             search trains

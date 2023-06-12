@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import React from "react";
 import Autosuggest from "react-autosuggest";
 import axios from "axios";
+import data from "./../../data";
 
 const Suggestion = styled.div`
   display: flex;
@@ -67,14 +68,18 @@ const languages = [
     year: 2012,
   },
 ];
-
+const renderSuggestion = (suggestion) => (
+  <Suggestion>{suggestion.name}</Suggestion>
+);
 // Teach Autosuggest how to calculate suggestions for any given input value.
 const getSuggestions = async (value) => {
   const inputValue = value.trim().toLowerCase();
   const inputLength = inputValue.length;
-  const data = await axios.get(`${URL}/getbooks/${value}`);
-  console.log(data.data.data, "suggestions");
-  return inputLength === 0 ? [] : data.data.data;
+  console.log(data, "suggestions");
+
+  return inputLength === 0
+    ? []
+    : data.filter((f) => f.name.indexOf(inputValue) > 0);
 };
 
 // When suggestion is clicked, Autosuggest needs to populate the input
@@ -83,14 +88,6 @@ const getSuggestions = async (value) => {
 const getSuggestionValue = (suggestion) => suggestion.name;
 
 // Use your imagination to render suggestions.
-const renderSuggestion = (suggestion) => (
-  <Link to={`./book/${suggestion._id}`}>
-    <Suggestion>
-      <Img src={suggestion.image} alt="" />
-      {suggestion.name}
-    </Suggestion>
-  </Link>
-);
 
 export class AutoSuggest extends React.Component {
   constructor() {
@@ -108,6 +105,12 @@ export class AutoSuggest extends React.Component {
   }
 
   onChange = (event, { newValue }) => {
+    {
+      this.props.froom && this.props.setFrom(newValue);
+    }
+    {
+      this.props.too && this.props.setTo(newValue);
+    }
     this.setState({
       value: newValue,
     });
@@ -120,7 +123,6 @@ export class AutoSuggest extends React.Component {
       suggestions: await getSuggestions(value),
     });
   };
-
   // Autosuggest will call this function every time you need to clear suggestions.
   onSuggestionsClearRequested = () => {
     this.setState({
@@ -130,10 +132,11 @@ export class AutoSuggest extends React.Component {
 
   render() {
     const { value, suggestions } = this.state;
+    const { placeholder, setFrom, setTo } = this.props;
 
     // Autosuggest will pass through all these props to the input.
     const inputProps = {
-      placeholder: "Type a book name",
+      placeholder: placeholder,
       value,
       onChange: this.onChange,
     };

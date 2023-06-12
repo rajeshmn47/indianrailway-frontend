@@ -108,3 +108,37 @@ h5 {
   font-weight: 500;
   opacity: 0.5;
 }
+.react-autosuggest__container {
+  height: 40px;
+  border: none;
+  outline: none;
+  position: relative;
+}
+.react-autosuggest__input {
+  height: 100%;
+  border: none;
+  outline: none;
+}
+.react-autosuggest__suggestions-container--open {
+  position: absolute;
+  background-color: #ffffff;
+  border-top: none;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border: none !important;
+  left: -1px;
+  top: 35px;
+  width: 100% !important;
+  outline: none;
+  z-index: 100000000;
+}
+
+.react-autosuggest__suggestions-container--open li {
+  list-style-type: none;
+  text-overflow: ellipsis;
+  border: none !important;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 3px 3px;
+}

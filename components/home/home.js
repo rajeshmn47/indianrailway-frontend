@@ -1,13 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { getduration, gettime } from "@/utils/gettime";
 import { AutoSuggest } from "./reactsuggest";
+import Link from "next/link";
+import { sortTrains } from "@/utils/gettime";
+import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 
 export function Home() {
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
   const [trains, setTrains] = useState([]);
+  const [filterByduration, setFilterByDuration] = useState("n");
+  useEffect(() => {
+    if (filterByduration == "asc") {
+      setTrains([...sortTrains(from, to, trains)]);
+    }
+    if (filterByduration == "dsc") {
+      setTrains([...sortTrains(from, to, trains)]);
+    }
+  }, [filterByduration]);
+  const handleSort = () => {
+    setFilterByDuration(
+      filterByduration == "n"
+        ? "asc"
+        : filterByduration == "dsc"
+        ? "asc"
+        : "dsc"
+    );
+  };
   const getTrains = async () => {
     const data = await axios.get(
       `http://127.0.0.1:8000/todos/between/${from}/${to}`
@@ -103,38 +124,47 @@ export function Home() {
               <div className="row">
                 <div className="col-6">Sort by :</div>
                 <div className="col-2">Departure</div>
-                <div className="col-2">Duration</div>
+                <div className="col-2" onClick={() => handleSort()}>
+                  {filterByduration == "asc" ? (
+                    <AiOutlineArrowDown />
+                  ) : filterByduration == "dsc" ? (
+                    <AiOutlineArrowUp />
+                  ) : null}{" "}
+                  Duration
+                </div>
                 <div className="col-2">Arrival</div>
               </div>
             </div>
 
             {trains.length > 0 &&
-              trains.map((t) => (
-                <div className="train d-flex justify-content-between">
-                  <div className="container-fluid">
-                    <div className="row">
-                      <div className="col-6">
-                        <h5>
-                          <span className="place">
-                            {t.trainNumber} {t.from} - {t.to}
-                          </span>{" "}
-                          {t.trainName}
-                        </h5>
-                      </div>
-                      <div className="col-2">
-                        <h5>{gettime(from, t.stations)}</h5>
-                        <p className="d">{from}</p>
-                      </div>
-                      <div className="col-2">
-                        <p>{getduration(from, to, t.stations)}</p>
-                      </div>
-                      <div className="col-2">
-                        <h5>{gettime(to, t.stations)}</h5>
-                        <p className="a">{to}</p>
+              sortTrains(from, to, trains).map((t) => (
+                <Link href={`/train/${t.trainNumber}`}>
+                  <div className="train d-flex justify-content-between">
+                    <div className="container-fluid">
+                      <div className="row">
+                        <div className="col-6">
+                          <h5>
+                            <span className="place">
+                              {t.trainNumber} {t.from} - {t.to}
+                            </span>{" "}
+                            {t.trainName}
+                          </h5>
+                        </div>
+                        <div className="col-2">
+                          <h5>{gettime(from, t.stations)}</h5>
+                          <p className="d">{from}</p>
+                        </div>
+                        <div className="col-2">
+                          <p>{getduration(from, to, t.stations)}</p>
+                        </div>
+                        <div className="col-2">
+                          <h5>{gettime(to, t.stations)}</h5>
+                          <p className="a">{to}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
           </div>
         </div>

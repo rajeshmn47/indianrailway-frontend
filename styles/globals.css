@@ -142,3 +142,22 @@ h5 {
   overflow: hidden;
   padding: 3px 3px;
 }
+.table {
+  width: 70%;
+}
+th {
+  width: 70%;
+}
+td {
+  text-transform: uppercase;
+}
+thead {
+  background-color: #747274;
+}
+thead > tr {
+  background-color: #747274;
+}
+th {
+  background-color: #747274 !important;
+  color: #ffffff !important;
+}

@@ -19,6 +19,12 @@ export function Home() {
     if (filterByduration == "dsc") {
       setTrains([...sortTrains(from, to, trains)]);
     }
+    if (filterByduration == "depasc") {
+      setTrains([...sortTrains(from, to, trains, "depasc")]);
+    }
+    if (filterByduration == "depdsc") {
+      setTrains([...sortTrains(from, to, trains, "depdsc")]);
+    }
   }, [filterByduration]);
   const handleSort = () => {
     setFilterByDuration(
@@ -27,6 +33,15 @@ export function Home() {
         : filterByduration == "dsc"
         ? "asc"
         : "dsc"
+    );
+  };
+  const handleduSort = () => {
+    setFilterByDuration(
+      filterByduration == "n"
+        ? "depasc"
+        : filterByduration == "depdsc"
+        ? "depasc"
+        : "depdsc"
     );
   };
   const getTrains = async () => {
@@ -123,7 +138,14 @@ export function Home() {
             <div className="container-fluid headers">
               <div className="row">
                 <div className="col-6">Sort by :</div>
-                <div className="col-2">Departure</div>
+                <div className="col-2" onClick={() => handleduSort()}>
+                  {filterByduration == "depasc" ? (
+                    <AiOutlineArrowDown />
+                  ) : filterByduration == "depdsc" ? (
+                    <AiOutlineArrowUp />
+                  ) : null}{" "}
+                  Departure
+                </div>
                 <div className="col-2" onClick={() => handleSort()}>
                   {filterByduration == "asc" ? (
                     <AiOutlineArrowDown />

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { sortTrains } from "@/utils/gettime";
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import url from "../../constants";
+import { sortall } from "@/utils/sorting";
 
 export function Home() {
   const [from, setFrom] = useState();
@@ -29,16 +30,17 @@ export function Home() {
       setTrains([...sortTrains(from, to, trains, "depdsc")]);
     }
   }, [filterByduration]);
-  const handleSort = () => {
-    setFilterByDuration(
-      filterByduration == "n"
-        ? "asc"
-        : filterByduration == "dsc"
-        ? "asc"
-        : "dsc"
-    );
+  useEffect(() => {
+    setTrains([...sortall(trains, from, to, filter)]);
+  }, [filter]);
+  const handleSort = (field) => {
+    setFilter({
+      field: field,
+      type: field,
+      order: filter.order == "asc" ? "dsc" : "asc",
+    });
   };
-  const handleduSort = () => {
+  const handleduSort = (field) => {
     setFilterByDuration(
       filterByduration == "n"
         ? "depasc"
@@ -46,6 +48,11 @@ export function Home() {
         ? "depasc"
         : "depdsc"
     );
+    setFilter({
+      field: field,
+      type: field,
+      order: filter.order == "asc" ? "dsc" : "asc",
+    });
   };
   const getTrains = async () => {
     const data = await axios.get(
@@ -141,23 +148,30 @@ export function Home() {
             <div className="container-fluid headers">
               <div className="row">
                 <div className="col-6">Sort by :</div>
-                <div className="col-2" onClick={() => handleduSort()}>
-                  {filterByduration == "depasc" ? (
+                <div className="col-2" onClick={() => handleSort("departure")}>
+                  {filter.type == "departure" && filter.order == "dsc" ? (
                     <AiOutlineArrowDown />
-                  ) : filterByduration == "depdsc" ? (
+                  ) : filter.order == "asc" && filter.type == "departure" ? (
                     <AiOutlineArrowUp />
                   ) : null}{" "}
                   Departure
                 </div>
-                <div className="col-2" onClick={() => handleSort()}>
-                  {filterByduration == "asc" ? (
+                <div className="col-2" onClick={() => handleSort("duration")}>
+                  {filter.type == "duration" && filter.order == "asc" ? (
                     <AiOutlineArrowDown />
-                  ) : filterByduration == "dsc" ? (
+                  ) : filter.order == "dsc" && filter.type == "duration" ? (
                     <AiOutlineArrowUp />
                   ) : null}{" "}
                   Duration
                 </div>
-                <div className="col-2">Arrival</div>
+                <div className="col-2" onClick={() => handleSort("arrival")}>
+                  {filter.type == "arrival" && filter.order == "asc" ? (
+                    <AiOutlineArrowDown />
+                  ) : filter.order == "dsc" && filter.type == "arrival" ? (
+                    <AiOutlineArrowUp />
+                  ) : null}{" "}
+                  Arrival
+                </div>
               </div>
             </div>
 

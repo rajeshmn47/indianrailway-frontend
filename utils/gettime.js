@@ -36,10 +36,12 @@ export function getduration(a, b, stations) {
   let start = stationOne?.departs.split(":");
   let end = stationTwo?.arrives.split(":");
   if (start?.length > 0 && end?.length > 0) {
-    let hourduration = end[0] - start[0] + "H";
-    let minuteduration = end[1] - start[1] + "M";
-    let duration = hourduration + " " + minuteduration;
-    return duration;
+    let mduration = end[0] * 60 - start[0] * 60;
+    let minuteduration = end[1] - start[1];
+    let duration = mduration + minuteduration;
+    let hours = Math.floor(duration / 60);
+    let minutes = duration % 60;
+    return hours + "H" + " " + minutes + "M";
   }
 }
 

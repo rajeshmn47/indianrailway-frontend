@@ -8,14 +8,21 @@ import { sortTrains } from "@/utils/gettime";
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import url from "../../constants";
 import { sortall } from "@/utils/sorting";
+import { filterall } from "@/utils/filtering";
 
 export function Home() {
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
   const [trains, setTrains] = useState([]);
   const [filterByduration, setFilterByDuration] = useState("n");
-  const [filter, setFilter] = useState({ order: "", field: "", type: "" });
+  const [sort, setSort] = useState({
+    order: "",
+    field: "",
+    type: "",
+  });
+  const [filter, setFilter] = useState({ from: "", to: "" });
   console.log(process.env.NEXT_PUBLIC_API_URL, "URL");
+  console.log(trains, "trains");
   useEffect(() => {
     if (filterByduration == "asc") {
       setTrains([...sortTrains(from, to, trains)]);
@@ -31,15 +38,26 @@ export function Home() {
     }
   }, [filterByduration]);
   useEffect(() => {
-    setTrains([...sortall(trains, from, to, filter)]);
+    setTrains([...sortall(trains, from, to, sort)]);
+  }, [sort]);
+  useEffect(() => {
+    setTrains([...filterall(trains, from, to, filter)]);
   }, [filter]);
   const handleSort = (field) => {
-    setFilter({
+    setSort({
       field: field,
       type: field,
       order: filter.order == "asc" ? "dsc" : "asc",
     });
   };
+
+  const handleFilter = (start, end) => {
+    setFilter({
+      from: start,
+      to: end,
+    });
+  };
+
   const handleduSort = (field) => {
     setFilterByDuration(
       filterByduration == "n"
@@ -113,19 +131,31 @@ export function Home() {
               <h5>Filter By Time</h5>
               <div className="d-flex">
                 <div className="d-flex flex-wrap time justify-content-between">
-                  <div className="border px-2 my-1 w-40 rounded">
+                  <div
+                    className="border px-2 my-1 w-40 rounded"
+                    onClick={() => handleFilter(5, 11)}
+                  >
                     <img src="./sunrise.svg" alt="" />
                     05AM-11AM
                   </div>
-                  <div className="border px-2 my-1 w-40 rounded">
+                  <div
+                    className="border px-2 my-1 w-40 rounded"
+                    onClick={() => handleFilter(11, 17)}
+                  >
                     <img src="./brightness-alt-high.svg" alt="" />
                     11AM-05PM
                   </div>
-                  <div className="border px-2 my-1 w-40 rounded">
+                  <div
+                    className="border px-2 my-1 w-40 rounded"
+                    onClick={() => handleFilter(17, 23)}
+                  >
                     <img src="./sunset.svg" alt="" />
                     05PM-11PM
                   </div>
-                  <div className="border px-2 my-1 w-40 rounded ">
+                  <div
+                    className="border px-2 my-1 w-40 rounded"
+                    onClick={() => handleFilter(23, 5)}
+                  >
                     <img src="./moon-stars.svg" alt="" />
                     11PM-05AM
                   </div>

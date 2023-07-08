@@ -18,7 +18,7 @@ export default function Train({ data }) {
 export async function getStaticProps(context) {
   const { id } = context.params;
   console.log(id, "myid");
-  const url = `http://127.0.0.1:8000/todos/traindetail/${id}`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/todos/traindetail/${id}`;
 
   const data = await fetch(url, {
     method: "GET",

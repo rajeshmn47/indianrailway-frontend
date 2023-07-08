@@ -6,12 +6,15 @@ import { AutoSuggest } from "./reactsuggest";
 import Link from "next/link";
 import { sortTrains } from "@/utils/gettime";
 import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
+import url from "../../constants";
 
 export function Home() {
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
   const [trains, setTrains] = useState([]);
   const [filterByduration, setFilterByDuration] = useState("n");
+  const [filter, setFilter] = useState({ order: "", field: "", type: "" });
+  console.log(process.env.NEXT_PUBLIC_API_URL, "URL");
   useEffect(() => {
     if (filterByduration == "asc") {
       setTrains([...sortTrains(from, to, trains)]);
@@ -46,7 +49,7 @@ export function Home() {
   };
   const getTrains = async () => {
     const data = await axios.get(
-      `http://127.0.0.1:8000/todos/between/${from}/${to}`
+      `${process.env.API_URL}/todos/between/${from}/${to}`
     );
     console.log(data, "data");
     setTrains([...data.data]);

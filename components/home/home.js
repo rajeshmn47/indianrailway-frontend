@@ -49,7 +49,7 @@ export function Home() {
   };
   const getTrains = async () => {
     const data = await axios.get(
-      `${process.env.API_URL}/todos/between/${from}/${to}`
+      `${process.env.NEXT_PUBLIC_API_URL}/todos/between/${from}/${to}`
     );
     console.log(data, "data");
     setTrains([...data.data]);

@@ -249,10 +249,10 @@ body {
   }
 }
 .timeline .event:after {
-  -webkit-box-shadow: 0 0 0 3px #1787e2;
-  box-shadow: 0 0 0 3px #1787e2;
+  -webkit-box-shadow: 0 0 0 3px #033e6e;
+  box-shadow: 0 0 0 3px #033e6e;
   left: -55.8px;
-  background: #fff;
+  background:  #033e6e;
   border-radius: 50%;
   height: 9px;
   width: 9px;
@@ -287,12 +287,18 @@ body {
 
 .timelinecontainer {
   width: calc(100%-100px);
-  margin-left: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 .tableheader{
   display: flex;
-  width: 400px;
+  width: 450px;
   justify-content: space-between;
+  background-color: #747274;
+  color: #FFFFFF;
+  padding:10px 40px;
 }
 .timeline {
   left: 50px;
@@ -307,4 +313,12 @@ body {
   display: flex;
   width: 300px;
   justify-content: space-between;
+  text-transform: uppercase;
+}
+.traindetail{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 450px;
+  margin-top: 20px;
 }

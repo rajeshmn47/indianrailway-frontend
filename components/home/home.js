@@ -14,7 +14,6 @@ export function Home() {
   const [from, setFrom] = useState();
   const [to, setTo] = useState();
   const [trains, setTrains] = useState([]);
-  const [filterByduration, setFilterByDuration] = useState("n");
   const [sort, setSort] = useState({
     order: "",
     field: "",
@@ -23,20 +22,6 @@ export function Home() {
   const [filter, setFilter] = useState({ from: "", to: "" });
   console.log(process.env.NEXT_PUBLIC_API_URL, "URL");
   console.log(trains, "trains");
-  useEffect(() => {
-    if (filterByduration == "asc") {
-      setTrains([...sortTrains(from, to, trains)]);
-    }
-    if (filterByduration == "dsc") {
-      setTrains([...sortTrains(from, to, trains)]);
-    }
-    if (filterByduration == "depasc") {
-      setTrains([...sortTrains(from, to, trains, "depasc")]);
-    }
-    if (filterByduration == "depdsc") {
-      setTrains([...sortTrains(from, to, trains, "depdsc")]);
-    }
-  }, [filterByduration]);
   useEffect(() => {
     setTrains([...sortall(trains, from, to, sort)]);
   }, [sort]);

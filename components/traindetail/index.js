@@ -4,6 +4,7 @@ import axios from "axios";
 import { getduration, gettime } from "@/utils/gettime";
 import Link from "next/link";
 import { Darumadrop_One } from "next/font/google";
+import { filterstations } from "@/utils/filtering";
 
 export function TrainDetail({ data }) {
   const [from, setFrom] = useState();
@@ -16,24 +17,31 @@ export function TrainDetail({ data }) {
   }, [data]);
   return (
     <>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Arrival</th>
-            <th>Station</th>
-            <th>Departure</th>
-          </tr>
-        </thead>
-        <tbody>
-          {stations.map((s) => (
-            <tr>
-              <td>{s.stationCode}</td>
-              <td>{s.stationName}</td>
-              <td>{s.departs}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="table timelinecontainer">
+        <div className="tableheader">
+          <div>Arrival</div>
+          <div>Station</div>
+          <div>Departure</div>
+        </div>
+        <div id="content">
+          <ul class="timeline">
+            {stations.map((s, index) => (
+              <>
+                {filterstations(stations, index) ? (
+                  <div className="dayheader">
+                    {filterstations(stations, index)}
+                  </div>
+                ) : null}
+
+                <li class="event" data-date={s.stationCode}>
+                  <p>{s.stationName}</p>
+                  <h5>{s.departs}</h5>
+                </li>
+              </>
+            ))}
+          </ul>
+        </div>
+      </div>
     </>
   );
 }

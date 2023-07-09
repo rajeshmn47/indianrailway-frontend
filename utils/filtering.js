@@ -17,3 +17,9 @@ export function filterall(trains, from, to, filter) {
   }
   return trainsfiltered;
 }
+
+export function filterstations(stations, i) {
+  if (!(stations[i].day == stations[i - 1]?.day)) {
+    return `Day ${stations[i].day}`;
+  }
+}

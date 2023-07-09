@@ -47,7 +47,7 @@ export function Home() {
     setSort({
       field: field,
       type: field,
-      order: filter.order == "asc" ? "dsc" : "asc",
+      order: sort.order == "asc" ? "dsc" : "asc",
     });
   };
 
@@ -179,25 +179,25 @@ export function Home() {
               <div className="row">
                 <div className="col-6">Sort by :</div>
                 <div className="col-2" onClick={() => handleSort("departure")}>
-                  {filter.type == "departure" && filter.order == "dsc" ? (
+                  {sort.type == "departure" && sort.order == "dsc" ? (
                     <AiOutlineArrowDown />
-                  ) : filter.order == "asc" && filter.type == "departure" ? (
+                  ) : sort.order == "asc" && sort.type == "departure" ? (
                     <AiOutlineArrowUp />
                   ) : null}{" "}
                   Departure
                 </div>
                 <div className="col-2" onClick={() => handleSort("duration")}>
-                  {filter.type == "duration" && filter.order == "asc" ? (
+                  {sort.type == "duration" && sort.order == "asc" ? (
                     <AiOutlineArrowDown />
-                  ) : filter.order == "dsc" && filter.type == "duration" ? (
+                  ) : sort.order == "dsc" && sort.type == "duration" ? (
                     <AiOutlineArrowUp />
                   ) : null}{" "}
                   Duration
                 </div>
                 <div className="col-2" onClick={() => handleSort("arrival")}>
-                  {filter.type == "arrival" && filter.order == "asc" ? (
+                  {sort.type == "arrival" && sort.order == "asc" ? (
                     <AiOutlineArrowDown />
-                  ) : filter.order == "dsc" && filter.type == "arrival" ? (
+                  ) : sort.order == "dsc" && sort.type == "arrival" ? (
                     <AiOutlineArrowUp />
                   ) : null}{" "}
                   Arrival

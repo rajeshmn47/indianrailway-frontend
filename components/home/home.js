@@ -59,7 +59,6 @@ export function Home() {
     const data = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/todos/between/${from}/${to}`
     );
-    console.log(data, "data");
     setTrains([...data.data]);
   };
   return (

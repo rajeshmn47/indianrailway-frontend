@@ -20,8 +20,6 @@ export function Home() {
     type: "",
   });
   const [filter, setFilter] = useState({ from: "", to: "" });
-  console.log(process.env.NEXT_PUBLIC_API_URL, "URL");
-  console.log(trains, "trains");
   useEffect(() => {
     setTrains([...sortall(trains, from, to, sort)]);
   }, [sort]);

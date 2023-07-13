@@ -11,7 +11,6 @@ export function TrainDetail({ data }) {
   const [to, setTo] = useState();
   const [train, setTrain] = useState([]);
   const [stations, setStations] = useState([]);
-  console.log(data, "data");
   useEffect(() => {
     setStations(data[0].stations);
     setTrain(data[0]);
